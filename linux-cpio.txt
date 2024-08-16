@@ -1,0 +1,27 @@
+CPIO:
+=====
+  cpio - copy files to and from archives
+  cpio copies files between archives and directories.
+
+- cpio command is like a tar tp create archives, but the best feature of cpio is find the files on the go and archive them, this is the main feature in cpio command.
+
+ex:
+---
+  ls | cpio  -ov archive.cpio   ---> archive 
+
+  cpio -iv < test.cpio  -> 
+
+  find / -print -depth | cpio  -ov > slash.cpio
+  find . -depth | cpio  -ov > slash.cpio
+
+
+  cpio -it -F archive.cpio   --> shows all files present in an archive
+
+  find . -iname "*.txt" | cpio -ov -H tar > textfiles.tar  --> copies all text files in cwd into tar format file
+
+  find . -iname "*.txt" | cpio -ov -H tar -F vijay:/dev/rst0 --rsh-command=usr/bin/ssh --> it will findout .txt files in cwd and formats and creates an archive with cpio, and the same file vijay im going to write into tape drive
+
+  cpio -od > directory.cpio  --> it will create a directory structure 
+
+- the main use of cpio command line tool is, if you are utilizing another devices, or without buying backup devices, you can use cpio to archive those files to somewhere else to different storage boxes 
+  
