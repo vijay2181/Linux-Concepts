@@ -50,7 +50,7 @@ vda                       252:0    0  250G  0 disk
 └─vda2                    252:2    0  249G  0 part 
   └─ubuntu--vg-ubuntu--lv 253:0    0  248G  0 lvm  /
 
-vijay@Vijays-ubuntu1:~$ losetup -l
+vijay@Vijays-ubuntu1:~$ losetup -l    --> checks, currently any existing attached loop devices
    NAME           SIZELIMIT OFFSET AUTOCLEAR RO BACK-FILE                        DIO LOG-SEC
 /dev/loop1         0      0         1  1 /var/lib/snapd/snaps/core18_2827.snap   0     512
 /dev/loop8         0      0         1  1 /var/lib/snapd/snaps/snapd_20676.snap   0     512
@@ -64,13 +64,69 @@ vijay@Vijays-ubuntu1:~$ losetup -l
 /dev/loop3         0      0         1  1 /var/lib/snapd/snaps/core20_2319.snap   0     512
 
 
+
 create your own loop device:
 ----------------------------
+this loop device is useful whenever i dont have any physical disks available or i needed any extra hard drive 
+
 losetup -f   --> finds the first unused loop device on system
 /dev/loop10
 
-mkdir testloop
-touch testloop/myloop
-fallocate -l 10G testloop/myloop   ---> allocating 10GB to a file, since we cannot mount an empty file
-sudo losetup /dev/loop10 testloop/myloop
+mkdir /test
+touch /test/file1
+fallocate -l 5G /test/file1   ---> allocating 5GB to a file, since we cannot mount an empty file
+ll -hl /test/file1
+
+- create a link between lookback device and raw file
+losetup /dev/loop10 /test/file1
+
+lsblk
+loop10 -> 5G 
+
+losetup -a
+
+- now i can use this device as a normal partition or make a lvm partition or go with different storage options 
+- next we need to assign a file system to this loop device and mount it(temporary and permanent)
+
+mkfs.xfs /dev/loop10
+
+mkdir /yahoo
+mount /dev/loop10 /yahoo/
+
+cd /yahoo
+touch file{1..10}.txt
+ls
+
+df -hT /yahoo/
+-> /dev/loop10 -> mounted on /yahoo
+
+- but this is a temporary mount, we need to make it permananet
+cat > /etc/fastab
+/test/file1         /yahoo       xfs     defaults   0 0
+
+- here, in above, we np need to use uuid, cause the file is not like a /dev/sda like block device that could probe in different order, it wont move, so it is not a problem if you using the absoulte path
+
+mount -a   --> permanent mount, so that mount point wont last when server reboots
+
+ls /yahoo/  --> some content is there
+
+- so this is how we can make partition inside loopback device 
+
+
+
+
+Remove Link:
+------------
+- suppose if you want to remove link b/w the loopback device and the raw file, then follow below steps
+
+unmount /yahoo
+- remove the entry from /etc/fstab
+/test/file1         /yahoo       xfs     defaults   0 0
+
+- next free the loopback device
+losetup -d /dev/loop10
+ls /yahoo/    ---> no content 
+
+
+
 
