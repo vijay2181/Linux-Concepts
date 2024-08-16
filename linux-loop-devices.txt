@@ -1,0 +1,76 @@
+Loop Devices:
+==============
+
+
+
+1 WHAT IS A LOOP DEVICE?
+- loop device is a block device that maps its data blocks not to a physical device such as a hard disk or optical disk drive, but to the blocks of a regular file in a filesystem or to another block device. 
+- loop device is a virtual or pseudo-device which enables a regular file to be accessed as a block device.
+- A loop device is a pseudo device that acts as a block-based device.
+- loop device is a regular file or device that is mounted as a file system
+- loop device is a device driver that allows you to mount a file that acts as a block device
+- loop devices enable binding a regular file to a special block device, thereby creating a virtual file system.
+- loop devices essentially allow you to mount regular files as file systems,
+- loop device is a device driver that allows you to mount a file that acts as a block device (a loop device is not actually a device type, it's an ordinary file).
+- loop device makes a file appear as its own block device.
+- loop device is a file that have been mounted as device
+
+- loop device in Unix-like operating systems, such as Linux or BSD, is a pseudo-device that allows a computer file to be accessed as if it were a block device. Essentially, the operating system kernel treats the contents of the file as if they were blocks on a device. This concept is particularly useful for scenarios like mounting ISO images or working with virtual file systems.
+
+- loop device is a psudeo-device that makes a computer file as a block device, this block device maps it's data blocks not to a physical device such as a hard disk or optical disk drive but to the blocks of a regular file in the linux file system.
+
+
+2 WHAT REALLY IS A LOOP DEVICE?
+- a loop device is the operating system treating a file, as if it were a block device
+- a loop device maps a normal file onto a virtual block device, this allows for the file to be used as a virtual file system, inside another file, with linux it is possible to make another file system inside a single file.
+
+
+
+vijay@Vijays-ubuntu1:$ lsblk
+NAME                      MAJ:MIN RM  SIZE RO TYPE MOUNTPOINTS
+loop0                       7:0    0 48.1M  1 loop /snap/core18/2809
+loop1                       7:1    0 48.1M  1 loop /snap/core18/2827
+loop2                       7:2    0 55.2M  1 loop /snap/core20/2184
+loop3                       7:3    0 55.2M  1 loop /snap/core20/2319
+loop4                       7:4    0 65.7M  1 loop /snap/core22/1382
+loop5                       7:5    0 65.7M  1 loop /snap/core22/1441
+loop6                       7:6    0 90.5M  1 loop /snap/lxd/29725
+loop7                       7:7    0 90.1M  1 loop /snap/lxd/29553
+loop8                       7:8    0 36.6M  1 loop /snap/snapd/20676
+loop9                       7:9    0 35.1M  1 loop /snap/snapd/21760
+vda                       252:0    0  250G  0 disk 
+├─vda1                    252:1    0    1G  0 part /boot
+└─vda2                    252:2    0  249G  0 part 
+  └─ubuntu--vg-ubuntu--lv 253:0    0  248G  0 lvm  /
+
+vijay@Vijays-ubuntu1:~$ lsblk -e 7
+NAME                      MAJ:MIN RM  SIZE RO TYPE MOUNTPOINTS
+vda                       252:0    0  250G  0 disk 
+├─vda1                    252:1    0    1G  0 part /boot
+└─vda2                    252:2    0  249G  0 part 
+  └─ubuntu--vg-ubuntu--lv 253:0    0  248G  0 lvm  /
+
+vijay@Vijays-ubuntu1:~$ losetup -l
+   NAME           SIZELIMIT OFFSET AUTOCLEAR RO BACK-FILE                        DIO LOG-SEC
+/dev/loop1         0      0         1  1 /var/lib/snapd/snaps/core18_2827.snap   0     512
+/dev/loop8         0      0         1  1 /var/lib/snapd/snaps/snapd_20676.snap   0     512
+/dev/loop6         0      0         1  1 /var/lib/snapd/snaps/lxd_29725.snap     0     512
+/dev/loop4         0      0         1  1 /var/lib/snapd/snaps/core22_1382.snap   0     512
+/dev/loop2         0      0         1  1 /var/lib/snapd/snaps/core20_2184.snap   0     512
+/dev/loop0         0      0         1  1 /var/lib/snapd/snaps/core18_2809.snap   0     512
+/dev/loop9         0      0         1  1 /var/lib/snapd/snaps/snapd_21760.snap   0     512
+/dev/loop7         0      0         1  1 /var/lib/snapd/snaps/lxd_29553.snap     0     512
+/dev/loop5         0      0         1  1 /var/lib/snapd/snaps/core22_1441.snap   0     512
+/dev/loop3         0      0         1  1 /var/lib/snapd/snaps/core20_2319.snap   0     512
+
+
+create your own loop device:
+----------------------------
+losetup -f   --> finds the first unused loop device on system
+/dev/loop10
+
+mkdir testloop
+touch testloop/myloop
+fallocate -l 10G testloop/myloop   ---> allocating 10GB to a file, since we cannot mount an empty file
+sudo losetup /dev/loop10 testloop/myloop
+
