@@ -17,11 +17,11 @@ Loop Devices:
 
 - loop device in Unix-like operating systems, such as Linux or BSD, is a pseudo-device that allows a computer file to be accessed as if it were a block device. Essentially, the operating system kernel treats the contents of the file as if they were blocks on a device. This concept is particularly useful for scenarios like mounting ISO images or working with virtual file systems.
 
-- loop device is a psudeo-device that makes a computer file as a block device, this block device maps it's data blocks not to a physical device such as a hard disk or optical disk drive but to the blocks of a regular file in the linux file system.
 
 
 2 WHAT REALLY IS A LOOP DEVICE?
 - a loop device is the operating system treating a file, as if it were a block device
+- loop device is a psuedo-device that makes a computer file as a block device, this block device maps it's data blocks not to a physical device such as a hard disk or optical disk drive but to the blocks of a regular file in the linux file system. 
 - a loop device maps a normal file onto a virtual block device, this allows for the file to be used as a virtual file system, inside another file, with linux it is possible to make another file system inside a single file.
 
 
