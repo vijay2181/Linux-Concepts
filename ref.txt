@@ -1,2 +1,6 @@
+archiving:
 https://github.com/jadijadi/linuxlearner/tree/master/content/course/lpic1
 https://youtube.com/playlist?list=PLFOYXCPEqdNUU55Xvgst8wGTWnz_sd-cj&si=sIGAosNmxFxSJ0E9
+
+disk management:
+https://youtu.be/cP1TqdOJNj8?si=0jSIPIzVJBI35-GN
