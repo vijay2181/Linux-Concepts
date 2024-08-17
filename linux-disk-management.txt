@@ -1,1 +1,11 @@
+Disk Management:
+=================
+
+Block storage devices: 1 block -> 1 sector -> 512 bytes
+
+1 sector -> 512 bytes
+2 sectors -> 1kb
+
+For most disks, each sector stores a fixed amount of user-accessible data, traditionally 512 bytes for hard disk drives (HDDs) and 2048 bytes for CD-ROMs and DVD-ROMs. Newer HDDs and SSDs use 4096-byte (4 KiB) sectors, which are known as the Advanced Format (AF).
+
 
