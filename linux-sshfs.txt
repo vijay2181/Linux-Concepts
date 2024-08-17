@@ -1,0 +1,4 @@
+SSHFS:
+=====
+
+- using username and password, we can connect to a remote server and it gets listing and transfers back all files, you dont need NFS or anything, simply an ssh connection to remote user can get you a usable filesystem in your local machine
