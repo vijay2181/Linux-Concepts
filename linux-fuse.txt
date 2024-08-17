@@ -1,0 +1,1 @@
+FUSE is a powerful library to implement a fully functional filesystem via user space programs.
